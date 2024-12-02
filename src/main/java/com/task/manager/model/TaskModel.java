@@ -1,59 +1,79 @@
 package com.task.manager.model;
 
+import java.time.LocalDate;
+
 public class TaskModel {
 
-        private Long id;
-        private String title;
-        private String description;
-        private String status;
-        private String dueDate;
-        private int priority;
+    private int id;
+    private String title;
 
-        public Long getId() {
-            return id;
-        }
 
-        public void setId(Long id) {
-            this.id = id;
-        }
 
-        public String getTitle() {
-            return title;
-        }
+    private String description;
+    private LocalDate dueDate;
+    private String status; // e.g., "Pending", "Completed"
+    // Default constructor
+    public TaskModel() {
+    }
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
+    // Parameterized constructor
+    public TaskModel(int id, String title, String description, LocalDate dueDate, String status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.status = status;
+    }
 
-        public String getDescription() {
-            return description;
-        }
+    // Getters and setters
+    public int getId() {
+        return id;
+    }
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-        public String getStatus() {
-            return status;
-        }
+    public String getTitle() {
+        return title;
+    }
 
-        public void setStatus(String status) {
-            this.status = status;
-        }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-        public String getDueDate() {
-            return dueDate;
-        }
+    public String getDescription() {
+        return description;
+    }
 
-        public void setDueDate(String dueDate) {
-            this.dueDate = dueDate;
-        }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-        public int getPriority() {
-            return priority;
-        }
+    public LocalDate getDueDate() {
+        return dueDate;
+    }
 
-        public void setPriority(int priority) {
-            this.priority = priority;
-        }
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", dueDate=" + dueDate +
+                ", status='" + status + '\'' +
+                '}';
+    }
 }

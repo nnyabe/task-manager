@@ -4,8 +4,6 @@ package com.task.manager.repository;
 import com.task.manager.interfaces.TaskRepository;
 import com.task.manager.model.TaskModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;

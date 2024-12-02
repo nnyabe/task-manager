@@ -14,9 +14,9 @@ public class JdbcConfig {
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/taskmanager");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/task_manager");
         dataSource.setUsername("root");
-        dataSource.setPassword("password");
+        dataSource.setPassword("1Am@Kr0fr0m$$");
         return dataSource;
     }
 
