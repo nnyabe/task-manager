@@ -143,4 +143,29 @@ The Task Manager API is designed to help manage tasks with details such as title
 
 ## Project Structure
 The project structure is organized as follows:
+```
+│
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── task/
+│   │   │           └── manager/
+│   │   │               ├── controller/
+│   │   │               │   └── TaskController.java
+│   │   │               ├── dto/
+│   │   │               │   └── TaskDTO.java
+│   │   │               ├── model/
+│   │   │               │   └── TaskModel.java
+│   │   │               ├── repository/
+│   │   │               │   └── TaskRepository.java
+│   │   │               └── service/
+│   │   │                   └── TaskServiceImpl.java
+│   │   └── resources/
+│   │       ├── application.properties
+│   │       └── static/
+│   
+│
+└── pom.xml
+```
 
