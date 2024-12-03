@@ -6,6 +6,7 @@ import com.task.manager.dto.TaskDTO;
 import com.task.manager.model.TaskModel;
 import com.task.manager.service.TaskServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,18 +38,6 @@ public class TaskController {
             taskUrls.add(new TaskDTO(task.getId(), task.getTitle(),url));
 
         }
-        System.out.println(request.getRequestURL().append("2/"));
-
-        String acceptHeader = request.getHeader("Accept");
-        if (acceptHeader != null && acceptHeader.contains("application/json")) {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            response.getWriter().write(objectMapper.writeValueAsString(tasks));
-            System.out.println(response.getContentType());
-            return null;
-        }
         return new ResponseEntity<>(taskUrls, HttpStatus.OK);
     }
     @GetMapping(produces = { "application/json"} , path = "/{id}")
@@ -57,9 +46,43 @@ public class TaskController {
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
 
-    @PostMapping
-    public String createTask(TaskModel task) {
+    @PostMapping(path="/", produces = {"application/json"})
+    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskModel task, HttpServletRequest request) {
+
         taskService.createTask(task);
-        return "redirect:/tasks";
+        return new ResponseEntity<>(new TaskDTO( task.getTitle(), request.getRequestURL().toString()), HttpStatus.CREATED);
+    }
+
+    @DeleteMapping(path = "/{id}", produces = {"application/json"})
+    public ResponseEntity<TaskDTO> deleteTask(@PathVariable("id") int id, HttpServletRequest request) {
+        taskService.deleteTask(id);
+        return new ResponseEntity<>(new TaskDTO(request.getRequestURL().toString()), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/{id}", produces = {"application/json"})
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable("id") int id, @RequestBody TaskModel updatedTask, HttpServletRequest request) {
+        TaskModel existingTask = taskService.getTaskById(id);
+
+        if (existingTask == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if(updatedTask.getTitle() == null){
+            updatedTask.setTitle(existingTask.getTitle());
+        }
+        if(updatedTask.getDescription() == null){
+            updatedTask.setDescription(existingTask.getDescription());
+        }
+        if(updatedTask.getStatus() == null){
+            updatedTask.setStatus(existingTask.getStatus());
+        }
+        if(updatedTask.getDueDate() == null){
+            updatedTask.setDueDate(existingTask.getDueDate());
+        }
+
+        updatedTask.setId(id);
+
+        taskService.updateTask(updatedTask);
+        String url = request.getRequestURL().toString();
+        return new ResponseEntity<>(new TaskDTO(updatedTask.getId(), updatedTask.getTitle(), url), HttpStatus.OK);
     }
 }

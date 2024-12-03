@@ -6,6 +6,17 @@ public class TaskDTO {
     private String title;
     private String url;
 
+    public TaskDTO() {
+
+    }
+    public TaskDTO(String url){
+        this.url = url;
+    }
+    public TaskDTO(String title, String url) {
+        this.title = title;
+        this.url = url;
+    }
+
     public TaskDTO(int id, String title, String url) {
         this.id = id;
         this.title = title;

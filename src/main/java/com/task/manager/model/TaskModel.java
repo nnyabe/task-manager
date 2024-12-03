@@ -12,7 +12,6 @@ public class TaskModel {
     private String description;
     private LocalDate dueDate;
     private String status; // e.g., "Pending", "Completed"
-    // Default constructor
     public TaskModel() {
     }
 
