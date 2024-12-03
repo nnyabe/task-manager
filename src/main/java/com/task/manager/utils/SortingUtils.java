@@ -83,4 +83,66 @@ public class SortingUtils {
 
         return sortedTasks;
     }
+    public static List<TaskModel> heapSortByDescription(List<TaskModel> tasks) {
+        List<TaskModel> sortedTasks = new ArrayList<>(tasks);
+        int n = sortedTasks.size();
+
+        // Build a max heap based on description
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(sortedTasks, n, i);
+        }
+
+        // Extract elements from the heap one by one
+        for (int i = n - 1; i > 0; i--) {
+            // Swap the current root (largest) with the last element
+            TaskModel temp = sortedTasks.get(0);
+            sortedTasks.set(0, sortedTasks.get(i));
+            sortedTasks.set(i, temp);
+
+            // Call max heapify on the reduced heap
+            heapify(sortedTasks, i, 0);
+        }
+
+        return sortedTasks;
+    }
+
+    // Heapify a subtree rooted at index i
+    private static void heapify(List<TaskModel> tasks, int n, int i) {
+        int largest = i; // Initialize largest as root
+        int left = 2 * i + 1; // Left child index
+        int right = 2 * i + 2; // Right child index
+
+        // Check if left child exists and is greater than the root
+        if (left < n) {
+            String leftDescription = tasks.get(left).getDescription();
+            String largestDescription = tasks.get(largest).getDescription();
+
+            // Compare descriptions, treating null as the lowest value
+            if ((leftDescription != null && (largestDescription == null || leftDescription.compareTo(largestDescription) > 0)) ||
+                    (largestDescription == null && leftDescription != null)) {
+                largest = left;
+            }
+        }
+
+        // Check if right child exists and is greater than the current largest
+        if (right < n) {
+            String rightDescription = tasks.get(right).getDescription();
+            String largestDescription = tasks.get(largest).getDescription();
+
+            if ((rightDescription != null && (largestDescription == null || rightDescription.compareTo(largestDescription) > 0)) ||
+                    (largestDescription == null && rightDescription != null)) {
+                largest = right;
+            }
+        }
+
+        // If the largest is not the root, swap them and recursively heapify the affected sub-tree
+        if (largest != i) {
+            TaskModel swap = tasks.get(i);
+            tasks.set(i, tasks.get(largest));
+            tasks.set(largest, swap);
+
+            // Recursively heapify the affected sub-tree
+            heapify(tasks, n, largest);
+        }
+    }
 }

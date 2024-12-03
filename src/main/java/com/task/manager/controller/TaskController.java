@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.task.manager.dto.TaskDTO;
 import com.task.manager.model.TaskModel;
 import com.task.manager.service.TaskServiceImpl;
+import com.task.manager.utils.SortingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMessage;
 import org.springframework.http.HttpMethod;
@@ -29,9 +30,22 @@ public class TaskController {
     private TaskServiceImpl taskService;
 
     @GetMapping(produces = { "application/json"} , path = "/")
-    public ResponseEntity<List<TaskDTO>> listTasks(TaskModel model, HttpServletRequest request, HttpServletResponse response, HttpMethod httpMethod) throws IOException {
+    public ResponseEntity<List<TaskDTO>> listTasks(@RequestParam(value = "sort", required = false) String sortType,
+                                                   TaskModel model, HttpServletRequest request) throws IOException {
 
+        if(sortType == null) {
+            sortType = "asc";
+        }
         List<TaskModel> tasks = taskService.getAllTasks();
+        if(sortType.equals("id")) {
+            tasks = SortingUtils.quickSortById(tasks);
+        } else if (sortType.equals("title")) {
+            tasks = SortingUtils.mergeSortByTitle(tasks);
+        } else if (sortType.equals("dueDate")) {
+            tasks = SortingUtils.bubbleSortByDueDate(tasks);
+        }else if(sortType.equals("description")) {
+            tasks = SortingUtils.heapSortByDescription(tasks);
+        }
         List<TaskDTO> taskUrls = new ArrayList<>();
         for(TaskModel task : tasks) {
             String url = request.getRequestURL().toString() + task.getId();
